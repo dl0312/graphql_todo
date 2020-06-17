@@ -32,12 +32,14 @@ const typeDefs = gql`
     createdAt: String
   }
   type Query {
-    tasks: [Task]
-    task(id: ID!): Task
+    tasks: [Task!]
+    task(id: ID!): Task!
   }
   type Mutation {
-    createTask(content: String!): Task
-    updateTask(id: ID!, content: String, done: Boolean): Task
+    createTask(content: String!): Task!
+    updateTask(id: ID!, content: String, done: Boolean): Task!
+    deleteTask(id: ID!): Boolean!
+    deleteAllTasks: Boolean!
   }
 `;
 
@@ -78,6 +80,22 @@ const resolvers: IResolvers = {
         targetId,
       ]);
       return (rows as any)[0];
+    },
+    deleteTask: async (_, { id: targetId }, __, ___) => {
+      const [result] = await pool.query("delete from task where id = ?", [
+        targetId,
+      ]);
+      console.log(result);
+      // return (rows as any)[0];
+      return true;
+    },
+    deleteAllTasks: async () => {
+      try {
+        const [result] = await pool.query("delete from task");
+        return true;
+      } catch (error) {
+        return false;
+      }
     },
   },
 };
