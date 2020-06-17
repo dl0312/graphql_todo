@@ -11,11 +11,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/mongoose": "^5.7.24",
+    "@types/mysql": "^2.15.13",
+    "@types/mysql2": "github:types/mysql2",
     "typescript": "^3.9.5"
   },
   "dependencies": {
     "apollo-server": "^2.14.4",
+    "dotenv": "^8.2.0",
     "graphql": "^15.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2"
   }
