@@ -21,13 +21,13 @@ export class TaskAPI extends DataSource {
   }
 
   async getAllTasks() {
-    const [rows] = await this.pool.query("select * from task");
+    const [rows] = await this.pool.query("SELECT * FROM task");
     return rows;
   }
 
   async getTaskById(id: string) {
     try {
-      const [rows] = await this.pool.query("select * from task where id = ?", [
+      const [rows] = await this.pool.query("SELECT * FROM task WHERE id = ?", [
         id,
       ]);
       return (rows as any)[0];
@@ -40,7 +40,7 @@ export class TaskAPI extends DataSource {
     try {
       const [
         result,
-      ] = await this.pool.query("insert into task (content) values (?)", [
+      ] = await this.pool.query("INSET INTO task (content) VALUES (?)", [
         content,
       ]);
       return result;
@@ -54,7 +54,7 @@ export class TaskAPI extends DataSource {
       const [
         result,
       ] = await this.pool.query(
-        "update task set content = ?, done = ? where id = ?",
+        "UPDATE task SET content=?, done=? WHERE id = ?",
         [content, done, id]
       );
       return result;
@@ -65,7 +65,7 @@ export class TaskAPI extends DataSource {
 
   async deleteTask(id: string) {
     try {
-      const [result] = await this.pool.query("delete from task where id = ?", [
+      const [result] = await this.pool.query("DELETE FROM task WHERE id = ?", [
         id,
       ]);
       return true;
