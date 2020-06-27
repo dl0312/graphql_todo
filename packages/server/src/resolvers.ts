@@ -13,8 +13,9 @@ export const resolvers: IResolvers = {
   Mutation: {
     createTask: async (_, { content }, { dataSources }, ___) => {
       const result = await dataSources.taskAPI.createTask(content);
+      console.log(result);
       if (result) {
-        return await dataSources.taskAPI.getAllTasks((result as any).insertId);
+        return await dataSources.taskAPI.getTaskById((result as any).insertId);
       }
       return null;
     },

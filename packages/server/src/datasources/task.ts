@@ -40,7 +40,7 @@ export class TaskAPI extends DataSource {
     try {
       const [
         result,
-      ] = await this.pool.query("INSET INTO task (content) VALUES (?)", [
+      ] = await this.pool.query("INSERT INTO task (content) VALUES (?)", [
         content,
       ]);
       return result;
@@ -76,7 +76,7 @@ export class TaskAPI extends DataSource {
 
   async deleteAllTasks() {
     try {
-      const [result] = await this.pool.query("delete from task");
+      const [result] = await this.pool.query("DELETE FROM task");
       return true;
     } catch (error) {
       return false;

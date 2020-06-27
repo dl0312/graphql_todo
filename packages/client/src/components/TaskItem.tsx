@@ -1,9 +1,15 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { ITask } from "../interface";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import { useEffect } from "react";
-import { UPDATE_TASK, GET_TASKS } from "../gql";
+import TaskQuery from "../queries/taskQuery";
+import { Checkbox, Button, Space } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import styled from "styled-components";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { List } from "antd";
+
+const Content = styled.div``;
 
 interface Props {
   task: ITask;
@@ -12,9 +18,12 @@ interface Props {
 export default function TaskItem({
   task: { id, content, done, createdAt },
 }: Props) {
-  const [updateTask] = useMutation(UPDATE_TASK, {
+  const [editable, setEditable] = useState<boolean>(false);
+  const [updateTask] = useMutation(TaskQuery.UPDATE_TASK, {
     update(cache, { data: { updateTask } }) {
-      const data = cache.readQuery<{ tasks: ITask[] }>({ query: GET_TASKS });
+      const data = cache.readQuery<{ tasks: ITask[] }>({
+        query: TaskQuery.GET_TASKS,
+      });
       if (data) {
         const { tasks: prevTasks } = data;
         console.log(data, updateTask);
@@ -28,7 +37,7 @@ export default function TaskItem({
           })
         );
         cache.writeQuery({
-          query: GET_TASKS,
+          query: TaskQuery.GET_TASKS,
           data: {
             tasks: prevTasks.map((task) => {
               if (task.id === id) {
@@ -44,7 +53,7 @@ export default function TaskItem({
     },
   });
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: CheckboxChangeEvent) => {
     console.log(e.target.value);
     console.log(e.target.checked);
     const { checked } = e.target;
@@ -52,40 +61,23 @@ export default function TaskItem({
   };
 
   return (
-    <li className="list-group-item">
-      <div className={`todo-indicator bg-${id}`} />
-      <div className="widget-content p-0">
-        <div className="widget-content-wrapper">
-          <div className="widget-content-left mr-2">
-            <div className="custom-checkbox custom-control">
-              <input
-                className="custom-control-input"
-                id={`exampleCustomCheckbox${id}`}
-                type="checkbox"
-                checked={done}
-                onChange={handleOnChange}
-              />
-              <label
-                className="custom-control-label"
-                htmlFor={`exampleCustomCheckbox${id}`}
-              >
-                &nbsp;
-              </label>
-            </div>
-          </div>
-          <div className="widget-content-left">
-            <div className="widget-heading">{content}</div>
-          </div>
-          <div className="widget-content-right">
-            <button className="border-0 btn-transition btn btn-outline-success">
-              <i className="fa fa-check" />
-            </button>
-            <button className="border-0 btn-transition btn btn-outline-danger">
-              <i className="fa fa-trash" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </li>
+    <List.Item key={id}>
+      <Checkbox
+        className="custom-control-input"
+        id={`exampleCustomCheckbox${id}`}
+        checked={done}
+        onChange={handleOnChange}
+      ></Checkbox>
+      <Content className="widget-content-left">{content}</Content>
+      <Space>
+        <Button shape="circle" icon={<EditOutlined />} />
+        <Button
+          type="primary"
+          danger
+          shape="circle"
+          icon={<DeleteOutlined />}
+        />
+      </Space>
+    </List.Item>
   );
 }
