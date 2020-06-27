@@ -10,3 +10,6 @@ MYSQL_USER=유저 명
 MYSQL_PASSWORD=유저 패스워드
 MYSQL_DB=DB 명
 ```
+
+# 참고자료
+- [react-antd-todo](https://github.com/leonardopliski/react-antd-todo)

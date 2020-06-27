@@ -26,16 +26,6 @@ export default function TaskItem({
       });
       if (data) {
         const { tasks: prevTasks } = data;
-        console.log(data, updateTask);
-        console.log(
-          prevTasks.map((task) => {
-            if (task.id === id) {
-              return updateTask;
-            } else {
-              return task;
-            }
-          })
-        );
         cache.writeQuery({
           query: TaskQuery.GET_TASKS,
           data: {

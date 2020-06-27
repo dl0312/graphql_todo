@@ -8,6 +8,7 @@ import { ITask } from "./interface";
 import TaskQuery from "./queries/taskQuery";
 import { List } from "antd";
 import styled from "styled-components";
+import InputTask from "./components/InputTask";
 
 const Container = styled.div`
   margin: 1rem;
@@ -23,6 +24,7 @@ export default function App() {
     const { tasks } = data;
     return (
       <Container>
+        <InputTask></InputTask>
         <List
           bordered
           dataSource={tasks}
