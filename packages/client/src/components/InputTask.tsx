@@ -42,8 +42,11 @@ export default function InputTask({}: Props): ReactElement {
       | React.MouseEvent<HTMLElement, MouseEvent>
       | undefined
   ) => {
-    createTask({ variables: { content } });
-    setContent("");
+    const trimedContent = content;
+    if (trimedContent !== "") {
+      createTask({ variables: { content } });
+      setContent("");
+    }
   };
 
   return (
