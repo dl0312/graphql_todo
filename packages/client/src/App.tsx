@@ -1,9 +1,7 @@
 import React from "react";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import TaskItem from "./components/TaskItem";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import { ITask } from "./interface";
 import TaskQuery from "./queries/taskQuery";
 import { List, Popconfirm, Button } from "antd";

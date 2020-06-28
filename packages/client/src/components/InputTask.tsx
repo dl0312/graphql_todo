@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from "react";
-import { Space, Input, Button } from "antd";
+import { Button } from "antd";
 import { TagsOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 import { useMutation } from "@apollo/react-hooks";
 import TaskQuery from "../queries/taskQuery";
 import { ITask } from "../interface";
