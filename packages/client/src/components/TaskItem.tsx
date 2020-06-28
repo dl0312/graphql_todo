@@ -3,13 +3,15 @@ import { ITask } from "../interface";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import TaskQuery from "../queries/taskQuery";
-import { Checkbox, Button, Space } from "antd";
+import { Checkbox, Button, Space, Popconfirm } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import styled from "styled-components";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { List } from "antd";
 
-const Content = styled.div``;
+const Content = styled("div")<{ checked: boolean }>`
+  text-decoration: ${({ checked }) => (checked ? "line-through" : undefined)};
+`;
 
 interface Props {
   task: ITask;
@@ -49,17 +51,19 @@ export default function TaskItem({
         query: TaskQuery.GET_TASKS,
       });
       if (data) {
-        const { tasks: prevTasks } = data;
-        cache.writeQuery({
-          query: TaskQuery.GET_TASKS,
-          data: {
-            tasks: prevTasks.filter((task) => {
-              if (task.id !== id) {
-                return true;
-              }
-            }),
-          },
-        });
+        if (deleteTask) {
+          const { tasks: prevTasks } = data;
+          cache.writeQuery({
+            query: TaskQuery.GET_TASKS,
+            data: {
+              tasks: prevTasks.filter((task) => {
+                if (task.id !== id) {
+                  return true;
+                }
+              }),
+            },
+          });
+        }
       } else {
       }
     },
@@ -71,29 +75,32 @@ export default function TaskItem({
   };
 
   const handleOnClickDeleteButton = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
+    e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
   ) => {
     deleteTask({ variables: { id } });
   };
 
   return (
     <List.Item key={id}>
-      <Checkbox
-        className="custom-control-input"
-        id={`exampleCustomCheckbox${id}`}
-        checked={done}
-        onChange={handleOnChangeCheckbox}
-      ></Checkbox>
-      <Content className="widget-content-left">{content}</Content>
+      <Checkbox checked={done} onChange={handleOnChangeCheckbox}></Checkbox>
+      <Content checked={done}>{content}</Content>
       <Space>
         <Button shape="circle" icon={<EditOutlined />} />
-        <Button
-          type="primary"
-          danger
-          shape="circle"
-          icon={<DeleteOutlined />}
-          onClick={handleOnClickDeleteButton}
-        />
+        <Popconfirm
+          title="Are you sure delete this task?"
+          onConfirm={handleOnClickDeleteButton}
+          onCancel={() => {}}
+          okText="Yes"
+          cancelText="No"
+          placement="topRight"
+        >
+          <Button
+            type="primary"
+            danger
+            shape="circle"
+            icon={<DeleteOutlined />}
+          />
+        </Popconfirm>
       </Space>
     </List.Item>
   );

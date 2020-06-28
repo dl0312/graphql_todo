@@ -7,9 +7,6 @@ import TaskQuery from "../queries/taskQuery";
 import { ITask } from "../interface";
 import Search from "antd/lib/input/Search";
 
-const Container = styled.div`
-  display: flex;
-`;
 interface Props {}
 
 export default function InputTask({}: Props): ReactElement {
@@ -50,19 +47,18 @@ export default function InputTask({}: Props): ReactElement {
   };
 
   return (
-    <Container>
-      <Search
-        value={content}
-        onChange={handleOnChange}
-        prefix={<TagsOutlined />}
-        placeholder="What needs to do done?"
-        onSearch={handleOnSubmit}
-        enterButton={
-          <Button type="primary" icon={<PlusCircleOutlined />}>
-            Add
-          </Button>
-        }
-      />
-    </Container>
+    <Search
+      value={content}
+      onChange={handleOnChange}
+      prefix={<TagsOutlined />}
+      placeholder="What needs to do done?"
+      onSearch={handleOnSubmit}
+      enterButton={
+        <Button type="primary" icon={<PlusCircleOutlined />}>
+          Add
+        </Button>
+      }
+      style={{ gridArea: "input" }}
+    />
   );
 }

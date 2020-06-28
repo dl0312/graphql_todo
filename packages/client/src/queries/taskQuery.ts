@@ -36,4 +36,9 @@ export default {
       deleteTask(id: $id)
     }
   `,
+  DELETE_ALL_TASKS: gql`
+    mutation DeleteAllTasks {
+      deleteAllTasks
+    }
+  `,
 };
