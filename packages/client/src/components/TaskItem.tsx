@@ -43,11 +43,37 @@ export default function TaskItem({
     },
   });
 
-  const handleOnChange = (e: CheckboxChangeEvent) => {
-    console.log(e.target.value);
-    console.log(e.target.checked);
+  const [deleteTask] = useMutation(TaskQuery.DELETE_TASK, {
+    update(cache, { data: { deleteTask } }) {
+      const data = cache.readQuery<{ tasks: ITask[] }>({
+        query: TaskQuery.GET_TASKS,
+      });
+      if (data) {
+        const { tasks: prevTasks } = data;
+        cache.writeQuery({
+          query: TaskQuery.GET_TASKS,
+          data: {
+            tasks: prevTasks.filter((task) => {
+              if (task.id !== id) {
+                return true;
+              }
+            }),
+          },
+        });
+      } else {
+      }
+    },
+  });
+
+  const handleOnChangeCheckbox = (e: CheckboxChangeEvent) => {
     const { checked } = e.target;
     updateTask({ variables: { id, content, done: checked } });
+  };
+
+  const handleOnClickDeleteButton = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    deleteTask({ variables: { id } });
   };
 
   return (
@@ -56,7 +82,7 @@ export default function TaskItem({
         className="custom-control-input"
         id={`exampleCustomCheckbox${id}`}
         checked={done}
-        onChange={handleOnChange}
+        onChange={handleOnChangeCheckbox}
       ></Checkbox>
       <Content className="widget-content-left">{content}</Content>
       <Space>
@@ -66,6 +92,7 @@ export default function TaskItem({
           danger
           shape="circle"
           icon={<DeleteOutlined />}
+          onClick={handleOnClickDeleteButton}
         />
       </Space>
     </List.Item>
