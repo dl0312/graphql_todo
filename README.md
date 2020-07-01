@@ -1,15 +1,19 @@
 # GraphQL To Do
 
-## .env
+## ☝️ Monorepo
 
-해당 프로젝트는 `dotenv`를 사용중입니다. 따라서 `/packages/server/.env`를 생성해서 사용해야합니다.
+레포지토리는 [lerna](https://github.com/lerna/lerna)를 이용하여 Monorepo로 관리되고 있습니다.
+해당 프로그램 사용을 위해서 `lerna`를 전역으로 설치해주세요.
 
 ```
-MYSQL_HOST=MySQL의 Host 주소
-MYSQL_USER=유저 명
-MYSQL_PASSWORD=유저 패스워드
-MYSQL_DB=DB 명
+$ npm install -global lerna
 ```
 
-# 참고자료
-- [react-antd-todo](https://github.com/leonardopliski/react-antd-todo)
+## 📦 Packages
+
+해당 레포지토리는 2개의 패키지로 구성되어 있으며 각 패키지는 독립적으로 사용 가능합니다. 각 패키지에 대한 자세한 설명은 아래 링크를 클릭하시면 볼 수 있습니다.
+
+| package                                    | content                  |
+| ------------------------------------------ | ------------------------ |
+| [@graphql-to-do/client](./packages/client) | GraphQL To Do 클라이언트 |
+| [@graphql-to-do/server](./packages/server) | GraphQL To Do 서버       |
