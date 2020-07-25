@@ -10,27 +10,10 @@ import InputTask from "./components/InputTask";
 import { ClearOutlined } from "@ant-design/icons";
 
 const Container = styled.div`
-  display: grid;
-  max-height: 100vh;
-  display: grid;
-  grid-template-rows: 1.5fr 17fr 1fr 1fr;
-  grid-template-areas:
-    "title"
-    "tasks"
-    "clear"
-    "input";
-  header {
-    grid-area: header;
-  }
-  main {
-    grid-area: main;
-  }
-  aside {
-    grid-area: aside;
-  }
-  footer {
-    grid-area: footer;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
 `;
 
 const Title = styled.div`
@@ -85,7 +68,6 @@ export default function App() {
           dataSource={tasks}
           renderItem={(task: ITask) => <TaskItem key={task.id} task={task} />}
           style={{
-            gridArea: "tasks",
             overflow: "scroll",
           }}
         ></List>
